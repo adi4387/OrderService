@@ -1,6 +1,9 @@
 package com.pubkart.order.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,16 +14,17 @@ import lombok.ToString;
 @Getter
 @AllArgsConstructor
 @ToString
+@Entity
 public class Order {
 	
-	
+	@Id
 	private Long orderId;
     private Cart cart;
-	private Long paymenttId;
+	private String paymentId;
 	private PaymentStatus paymentStatus;
 	private OrderStatus orderStatus;
-	private Long userId;
-	private Date orderDate;
+	private String userId;
+	private LocalDateTime orderDate;
 	
 	public Order() {
 		

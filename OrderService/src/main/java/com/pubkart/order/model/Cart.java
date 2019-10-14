@@ -2,22 +2,27 @@ package com.pubkart.order.model;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-@Setter
-@Getter
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+
 @AllArgsConstructor
-@ToString
+@Data
+@Entity
 public class Cart {
 	
+	@Id
+	private Long id;
 	private String UserId;
 	private List<LineItem> items;
 	private double cartValue;
 	
-	public Cart() {}
+	public Cart() {
+		
+	}
 
 	
 	
