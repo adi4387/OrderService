@@ -1,13 +1,12 @@
 package com.pubkart.order.service.impl;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import com.pubkart.order.feign.InventoryFeignService;
 import com.pubkart.order.feign.PaymentFeignService;
-import com.pubkart.order.model.CardDetails;
 import com.pubkart.order.model.Cart;
 import com.pubkart.order.model.Order;
 import com.pubkart.order.model.OrderStatus;
@@ -70,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
 	private Order saveInitialOrder(Cart cart) {
 		Order order = new Order();
 		order.setCart(cart);
-		order.setOrderDate(LocalDateTime.now());
+		order.setOrderDate(new Date(new java.util.Date().getTime()));
 		order.setUserId(cart.getUserId());
 		order = orderRepository.save(order);
 		return order;
