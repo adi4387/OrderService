@@ -1,6 +1,8 @@
 package com.pubkart.order.service.impl;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import com.pubkart.order.feign.InventoryFeignService;
 import com.pubkart.order.feign.PaymentFeignService;
 import com.pubkart.order.model.Cart;
+import com.pubkart.order.model.LineItem;
 import com.pubkart.order.model.Order;
 import com.pubkart.order.model.OrderStatus;
 import com.pubkart.order.model.Payment;
@@ -30,7 +33,8 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public String createOrder(Cart cart) {
-		ResponseEntity<String> result = inventoryFeignService.getItems(cart.getItems());
+		List<LineItem> items = new ArrayList<LineItem>(cart.getItems());
+		ResponseEntity<String> result = inventoryFeignService.getItems(items);
 
 		if (result.equals(PASS)) {
 			Order order = saveInitialOrder(cart);
@@ -43,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	private void makePayment(Cart cart, Order order) {
-		Payment payment = new Payment(order.getUserId(), order.getOrderId(), cart.getCartValue(), null);
+		Payment payment = new Payment(order.getUserId(), order.getId(), cart.getCartValue(), null);
 		PaymentResponse response = paymentFeignService.makePayment(payment);
 		if (PaymentStatus.SUCCESS.equals(response.getStatus())) {
 			updateOrderWhenPaymentIsSuccessFull(order, response);
